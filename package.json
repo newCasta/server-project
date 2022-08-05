@@ -1,0 +1,21 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon --ignore src/data/db.json server.js"
+  },
+  "author": "Juan Sebastian Castañeda Burbano",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "http-errors": "^2.0.0",
+    "jad-db": "^1.0.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

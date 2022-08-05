@@ -1,0 +1,14 @@
+{
+    "products": [
+        {
+            "_id": "6fb5f77c-268d-4621-b95a-4c91164c94cc",
+            "name": 1,
+            "price": 30,
+            "thumbnail": 1,
+            "code": 1,
+            "stock": 2,
+            "_createdAt": "2022-08-04T23:06:36.895Z",
+            "_updatedAt": "2022-08-04T23:14:21.996Z"
+        }
+    ]
+}
