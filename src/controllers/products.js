@@ -39,7 +39,11 @@ export const createProduct = async (req, res, next) => {
         if (!name || !price || !thumbnail || !code || !stock)
             throw createError(400, 'Missing required fields name, price, thumbnail, code and stock')
 
-        const pid = await Products.create(req.body)
+        const pid = await Products.create({
+            ...req.body,
+            price: parseInt(price),
+            stock: parseInt(stock)
+        })
         const product = await Products.getById(pid)
 
         res.json({
@@ -61,7 +65,11 @@ export const updateProduct = async (req, res, next) => {
         if (!product) throw createError(404, 'Product not found')
 
         if (name || price || thumbnail || code || stock) {
-            await Products.update(pid, req.body)
+            await Products.update(pid, {
+                ...req.body,
+                price: parseInt(price),
+                stock: parseInt(stock)
+            })
             const product = await Products.getById(pid)
 
             return res.json({

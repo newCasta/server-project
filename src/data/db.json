@@ -6,9 +6,30 @@
             "price": 30,
             "thumbnail": 1,
             "code": 1,
-            "stock": 2,
+            "stock": 200,
             "_createdAt": "2022-08-04T23:06:36.895Z",
             "_updatedAt": "2022-08-04T23:14:21.996Z"
+        },
+        {
+            "_id": "b137a092-65bb-4227-b7a2-de8116805652",
+            "name": "plastico",
+            "price": 2000,
+            "thumbnail": "asdad",
+            "code": 12312313,
+            "stock": 100,
+            "_createdAt": "2022-08-08T16:39:09.172Z",
+            "_updatedAt": "2022-08-08T16:39:09.172Z"
+        },
+        {
+            "_id": "f86bd340-b2ef-4550-959e-6358aed6040d",
+            "name": "plastico2",
+            "price": 2000,
+            "thumbnail": "asdad",
+            "code": 12312313,
+            "stock": 100,
+            "_createdAt": "2022-08-08T16:39:17.888Z",
+            "_updatedAt": "2022-08-08T16:39:17.888Z"
         }
-    ]
+    ],
+    "carts": []
 }

@@ -46,7 +46,6 @@ export const deleteCart = async (req, res, next) => {
 
         res.json({
             message: 'Cart deleted',
-            data: cart,
             status: res.statusCode
         })
     } catch (err) {
@@ -58,7 +57,10 @@ export const addProduct = async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.body
-        const quantity = req.body?.quantity || 1
+
+        if (req.body?.quantity && isNaN(req.body.quantity)) throw createError(400, 'Quantity must be a number')
+
+        const quantity = parseInt(req.body.quantity) || 1
 
         const cart = await Cart.getById(cid)
 
@@ -73,7 +75,7 @@ export const addProduct = async (req, res, next) => {
         if (pCart) {
             if (pCart.quantity >= product.stock) throw createError(400, 'Product out of stock')
 
-            pCart.quantity += 1
+            pCart.quantity += quantity
             cart.products = cart.products.map(p => p.id === pid ? pCart : p)
         } else {
             if (product.stock <= 0) throw createError(400, 'Product out of stock')
@@ -88,7 +90,7 @@ export const addProduct = async (req, res, next) => {
 
         res.json({
             message: 'Product added to cart',
-            data: !pCart ? { id: pid, quantity: 1 } : pCart,
+            data: !pCart ? { id: pid, quantity } : pCart,
             status: res.statusCode
         })
     } catch (err) {
@@ -103,9 +105,20 @@ export const getProducts = async (req, res, next) => {
 
         if (!cart) throw createError(404, 'Cart not found')
 
+        const products = await Promise.all(cart.products.map(async p => {
+            const product = await Product.getById(p.id)
+            return {
+                product,
+                quantity: p.quantity
+            }
+        }))
+
+
+        console.log(products)
+
         res.json({
             message: 'Cart found',
-            data: cart.products,
+            data: products,
             status: res.statusCode
         })
     } catch (err) {
@@ -117,7 +130,7 @@ export const removeProduct = async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
-        const completeRemove = req.body?.completeRemove || false
+        const removeAll = req.query.removeAll || false
         const cart = await Cart.getById(cid)
 
         if (!cart) throw createError(404, 'Cart not found')
@@ -130,7 +143,7 @@ export const removeProduct = async (req, res, next) => {
 
         if (!pCart) throw createError(404, 'Product not found in cart')
 
-        if (completeRemove) {
+        if (removeAll) {
             cart.products = cart.products.filter(p => p.id !== pid)
 
             await Cart.update(cid, cart)
@@ -151,7 +164,7 @@ export const removeProduct = async (req, res, next) => {
         await Cart.update(cid, cart)
 
         res.json({
-            message: 'Product removed from cart',
+            message: 'Remove one product from cart',
             data: { id: pid, quantity: pCart.quantity },
             status: res.statusCode
         })

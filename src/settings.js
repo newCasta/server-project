@@ -21,7 +21,7 @@ app.use('/api', apiRoute)
 
 // 404 handler
 app.use((req, res, next) => {
-    next(createError(404))
+    next(createError(500, 'Not found'))
 })
 
 // error handler
