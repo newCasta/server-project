@@ -1,14 +1,15 @@
 import 'dotenv/config'
-import './utils/dirname.js'
 import express from 'express'
 import createError from 'http-errors'
 import { join } from 'path'
 import logger from 'morgan'
+import { dirname } from 'dirname-es'
 
 // import routes
 import apiRoute from './routes/index.js'
 
 const app = express()
+const __dirname = dirname(import.meta)
 
 // middelwares
 app.use(logger('dev'))

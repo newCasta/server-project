@@ -130,7 +130,7 @@ export const removeProduct = async (req, res, next) => {
     try {
         const { cid } = req.params
         const { pid } = req.params
-        const removeAll = req.query.removeAll || false
+        const removeAll = req.query.removeAll || true
         const cart = await Cart.getById(cid)
 
         if (!cart) throw createError(404, 'Cart not found')
