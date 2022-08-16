@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { readdirSync } from 'fs'
-import { dirname } from 'dirname-es'
+import { dirname } from '../utils/dirname.js'
 
 const __dirname = dirname(import.meta)
 const router = Router()

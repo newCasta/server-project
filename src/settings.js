@@ -3,7 +3,7 @@ import express from 'express'
 import createError from 'http-errors'
 import { join } from 'path'
 import logger from 'morgan'
-import { dirname } from 'dirname-es'
+import { dirname } from './utils/dirname.js'
 
 // import routes
 import apiRoute from './routes/index.js'
@@ -22,7 +22,7 @@ app.use('/api', apiRoute)
 
 // 404 handler
 app.use((req, res, next) => {
-    next(createError(500, 'Not found'))
+    next(createError(404, 'Not found'))
 })
 
 // error handler
