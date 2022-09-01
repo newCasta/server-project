@@ -1,6 +1,9 @@
-import Cart from '../models/Cart.js'
-import Product from '../models/Product.js'
+// import Cart from '../models/Cart.js'
+// import Product from '../models/Product.js'
 import createError from 'http-errors'
+import DAO from '../dao/index.js'
+
+const { Cart, Product } = DAO
 
 export const getCart = async (req, res, next) => {
     try {
@@ -42,7 +45,7 @@ export const deleteCart = async (req, res, next) => {
 
         if (!cart) throw createError(404, 'Cart not found')
 
-        await Cart.deleteById(cid)
+        await Cart.remove(cid)
 
         res.json({
             message: 'Cart deleted',

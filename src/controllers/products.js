@@ -1,9 +1,12 @@
-import Products from '../models/Product.js'
+// import Products from '../models/Product.js'
 import createError from 'http-errors'
+import DAO from '../dao/index.js'
+
+const { Product } = DAO
 
 export const getProducts = async (req, res, next) => {
     try {
-        const products = await Products.get()
+        const products = await Product.getAll()
 
         res.json({
             message: 'Products fetched successfully',
@@ -11,6 +14,7 @@ export const getProducts = async (req, res, next) => {
             status: res.statusCode
         })
     } catch (err) {
+        console.log(err)
         next(createError(500))
     }
 }
@@ -18,7 +22,7 @@ export const getProducts = async (req, res, next) => {
 export const getProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
-        const product = await Products.getById(pid)
+        const product = await Product.getById(pid)
 
         if (!product) throw createError(404, 'Product not found')
 
@@ -39,12 +43,12 @@ export const createProduct = async (req, res, next) => {
         if (!name || !price || !thumbnail || !code || !stock)
             throw createError(400, 'Missing required fields name, price, thumbnail, code and stock')
 
-        const pid = await Products.create({
+        const pid = await Product.create({
             ...req.body,
             price: parseInt(price),
             stock: parseInt(stock)
         })
-        const product = await Products.getById(pid)
+        const product = await Product.getById(pid)
 
         res.json({
             message: 'Product created',
@@ -60,17 +64,17 @@ export const updateProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
         const { name, price, thumbnail, code, stock } = req.body
-        const product = await Products.getById(pid)
+        const product = await Product.getById(pid)
 
         if (!product) throw createError(404, 'Product not found')
 
         if (name || price || thumbnail || code || stock) {
-            await Products.update(pid, {
+            await Product.update(pid, {
                 ...req.body,
                 price: parseInt(price),
                 stock: parseInt(stock)
             })
-            const product = await Products.getById(pid)
+            const product = await Product.getById(pid)
 
             return res.json({
                 message: 'Product updated',
@@ -88,11 +92,11 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
-        const product = await Products.getById(pid)
+        const product = await Product.getById(pid)
 
         if (!product) throw createError(404, 'Product not found')
 
-        await Products.deleteById(pid)
+        await Product.remove(pid)
 
         res.json({
             message: 'Product deleted',

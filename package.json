@@ -9,10 +9,12 @@
   },
   "author": "Juan Sebastian Castañeda Burbano",
   "dependencies": {
+    "dirname-es": "^1.0.7",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "http-errors": "^2.0.0",
     "jad-db": "^1.0.1",
+    "mongoose": "^6.5.4",
     "morgan": "^1.10.0"
   },
   "devDependencies": {

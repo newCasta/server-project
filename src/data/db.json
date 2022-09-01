@@ -29,7 +29,29 @@
             "stock": 100,
             "_createdAt": "2022-08-08T16:39:17.888Z",
             "_updatedAt": "2022-08-08T16:39:17.888Z"
+        },
+        {
+            "_id": "ad8fd9db-99de-445b-8919-31b524e1fc69",
+            "name": 1,
+            "price": 30,
+            "thumbnail": 1,
+            "code": 1,
+            "stock": 200,
+            "_createdAt": "2022-09-01T22:19:23.223Z",
+            "_updatedAt": "2022-09-01T22:19:23.223Z"
         }
     ],
-    "carts": []
+    "carts": [
+        {
+            "_id": "0ddbea2a-0f1e-4d1e-87c0-41431a93d4e7",
+            "products": [
+                {
+                    "id": "6fb5f77c-268d-4621-b95a-4c91164c94cc",
+                    "quantity": 1
+                }
+            ],
+            "_createdAt": "2022-09-01T22:28:00.423Z",
+            "_updatedAt": "2022-09-01T22:30:01.566Z"
+        }
+    ]
 }

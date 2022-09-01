@@ -2,6 +2,8 @@
 
 the server for my final project
 
+the mongo url: mongodb+srv://siCasta:KAAbg22xkalVCHg6@cluster0.7sqyldr.mongodb.net/?retryWrites=true&w=majority
+
 ## routes
 
 - `POST` /api/carts : create a new cart

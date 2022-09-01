@@ -3,7 +3,7 @@ import express from 'express'
 import createError from 'http-errors'
 import { join } from 'path'
 import logger from 'morgan'
-import { dirname } from './utils/dirname.js'
+import { dirname } from 'dirname-es'
 
 // import routes
 import apiRoute from './routes/index.js'
@@ -11,7 +11,7 @@ import apiRoute from './routes/index.js'
 const app = express()
 const __dirname = dirname(import.meta)
 
-// middelwares
+// middlewares
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
