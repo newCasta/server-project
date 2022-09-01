@@ -1,4 +1,5 @@
-const persistence = 'MONGO'
+import { persistence } from '../config.js'
+
 let services
 
 switch (persistence) {

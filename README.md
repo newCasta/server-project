@@ -23,6 +23,7 @@ the mongo url: mongodb+srv://siCasta:KAAbg22xkalVCHg6@cluster0.7sqyldr.mongodb.n
 
 - `PORT`: the port of the server
 - `NODE_ENV`: the environment of the server
+- `MONGO_URI`: the uri of the mongo db
 
 ## headers for admin mode
 
