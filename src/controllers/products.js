@@ -1,17 +1,14 @@
-// import Products from '../models/Product.js'
 import createError from 'http-errors'
-import DAO from '../dao/index.js'
-
-const { Product } = DAO
+import Product from '../models/Product.js'
 
 export const getProducts = async (req, res, next) => {
     try {
-        const products = await Product.getAll()
+        const products = await Product.find()
 
         res.json({
             message: 'Products fetched successfully',
             data: products,
-            status: res.statusCode
+            status: res.statusCode,
         })
     } catch (err) {
         console.log(err)
@@ -22,14 +19,14 @@ export const getProducts = async (req, res, next) => {
 export const getProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
-        const product = await Product.getById(pid)
+        const product = await Product.findById(pid)
 
         if (!product) throw createError(404, 'Product not found')
 
         res.json({
             message: 'Product found',
             data: product,
-            status: res.statusCode
+            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -40,20 +37,25 @@ export const createProduct = async (req, res, next) => {
     try {
         const { name, price, thumbnail, code, stock } = req.body
 
+        if (isNaN(price) || isNaN(stock) || isNaN(code))
+            throw createError(
+                400,
+                'Fields: price, stock or code might be numbers'
+            )
         if (!name || !price || !thumbnail || !code || !stock)
-            throw createError(400, 'Missing required fields name, price, thumbnail, code and stock')
+            throw createError(
+                400,
+                'Missing required fields name, price, thumbnail, code and stock'
+            )
 
-        const pid = await Product.create({
+        const product = await Product.create({
             ...req.body,
-            price: parseInt(price),
-            stock: parseInt(stock)
         })
-        const product = await Product.getById(pid)
 
         res.json({
             message: 'Product created',
             data: product,
-            status: res.statusCode
+            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -64,22 +66,26 @@ export const updateProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
         const { name, price, thumbnail, code, stock } = req.body
-        const product = await Product.getById(pid)
+        const product = await Product.findById(pid)
 
         if (!product) throw createError(404, 'Product not found')
-
+        if (isNaN(price) || isNaN(stock) || isNaN(code))
+            throw createError(
+                400,
+                'Fields: price, stock or code might be numbers'
+            )
         if (name || price || thumbnail || code || stock) {
-            await Product.update(pid, {
+            console.log(req.body)
+
+            await product.update({
                 ...req.body,
-                price: parseInt(price),
-                stock: parseInt(stock)
             })
-            const product = await Product.getById(pid)
+            const uProduct = await Product.findById(pid)
 
             return res.json({
                 message: 'Product updated',
-                data: product,
-                status: res.statusCode
+                data: uProduct,
+                status: res.statusCode,
             })
         }
 
@@ -92,15 +98,15 @@ export const updateProduct = async (req, res, next) => {
 export const deleteProduct = async (req, res, next) => {
     try {
         const { pid } = req.params
-        const product = await Product.getById(pid)
+        const product = await Product.findById(pid)
 
         if (!product) throw createError(404, 'Product not found')
 
-        await Product.remove(pid)
+        await product.delete()
 
         res.json({
             message: 'Product deleted',
-            status: res.statusCode
+            status: res.statusCode,
         })
     } catch (err) {
         next(err)

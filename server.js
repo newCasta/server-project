@@ -1,14 +1,24 @@
 import app from './src/settings.js'
 import http from 'http'
+import mongoose from 'mongoose'
 
 const port = normalizePort(process.env.PORT || 8080)
+const { connect } = mongoose
+
 app.set('port', port)
 
 const server = http.createServer(app)
 
-server.listen(port)
-server.on('error', onError)
-server.on('listening', onListening)
+connect(process.env.MONGO_URI)
+    .then(() => {
+        server.listen(port)
+        server.on('error', onError)
+        server.on('listening', onListening)
+    })
+    .catch(err => {
+        console.log(err)
+        process.exit(1)
+    })
 
 function normalizePort(val) {
     const port = parseInt(val, 10)
@@ -22,9 +32,7 @@ function normalizePort(val) {
 function onError(error) {
     if (error.syscall !== 'listen') throw error
 
-    const bind = typeof port === 'string'
-        ? 'Pipe ' + port
-        : 'Port ' + port
+    const bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
 
     switch (error.code) {
         case 'EACCES':
@@ -42,8 +50,6 @@ function onError(error) {
 
 function onListening() {
     const addr = server.address()
-    const bind = typeof addr === 'string'
-        ? 'pipe ' + addr
-        : 'port ' + addr.port
+    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port
     console.log(`Listening on ${bind}`)
 }

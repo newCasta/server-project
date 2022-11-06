@@ -1,23 +1,36 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon --ignore src/data/db.json server.js"
-  },
-  "author": "Juan Sebastian Castañeda Burbano",
-  "dependencies": {
-    "dirname-es": "^1.0.7",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
-    "http-errors": "^2.0.0",
-    "jad-db": "^1.0.1",
-    "mongoose": "^6.5.4",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.19"
-  }
+    "name": "server",
+    "version": "1.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon --ignore src/data/db.json server.js"
+    },
+    "author": "Juan Sebastian Castañeda Burbano",
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "connect-mongo": "^4.6.0",
+        "cors": "^2.8.5",
+        "dirname-es": "^1.0.7",
+        "dotenv": "^16.0.1",
+        "express": "^4.18.1",
+        "express-session": "^1.17.3",
+        "http-errors": "^2.0.0",
+        "mongoose": "^6.5.4",
+        "morgan": "^1.10.0",
+        "passport": "^0.6.0",
+        "passport-local": "^1.0.0"
+    },
+    "devDependencies": {
+        "@types/bcrypt": "^5.0.0",
+        "@types/cors": "^2.8.12",
+        "@types/express": "^4.17.14",
+        "@types/express-session": "^1.17.5",
+        "@types/http-errors": "^2.0.1",
+        "@types/morgan": "^1.9.3",
+        "@types/passport": "^1.0.11",
+        "@types/passport-local": "^1.0.34",
+        "nodemon": "^2.0.19"
+    }
 }

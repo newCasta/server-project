@@ -1,17 +1,24 @@
 import { Router } from 'express'
-import { getCart, createCart, deleteCart, addProduct, getProducts, removeProduct } from '../controllers/cart.js'
+import {
+    getCart,
+    createCart,
+    deleteCart,
+    addProduct,
+    getProducts,
+    removeProduct,
+} from '../controllers/cart.js'
+import { loggedUser } from '../middlewares/loggedUser.js'
 
 const router = Router()
 
-router.post('/', createCart)
-router.route('/:cid')
-    .get(getCart)
-    .delete(deleteCart)
+router.post('/', loggedUser, createCart)
+router.route('/:cid').get(loggedUser, getCart).delete(loggedUser, deleteCart)
 
-router.route('/:cid/products')
-    .get(getProducts)
-    .post(addProduct)
+router
+    .route('/:cid/products')
+    .get(loggedUser, getProducts)
+    .post(loggedUser, addProduct)
 
-router.delete('/:cid/products/:pid', removeProduct)
+router.delete('/:cid/products/:pid', loggedUser, removeProduct)
 
 export default router

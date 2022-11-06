@@ -1,9 +1,11 @@
 import createError from 'http-errors'
 
 export const isAdmin = (req, res, next) => {
-    const isAdmin = req.headers?.isadmin
+    if (!req.session.user) return next(createError(401, 'You are not logged'))
 
-    if (!!isAdmin) return next()
+    const isAdmin = req.session.user.permissions.include('admin')
+
+    if (isAdmin) return next()
 
     next(createError(403, 'You are not an admin'))
 }
