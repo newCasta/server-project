@@ -8,7 +8,6 @@ export const getProducts = async (req, res, next) => {
         res.json({
             message: 'Products fetched successfully',
             data: products,
-            status: res.statusCode,
         })
     } catch (err) {
         console.log(err)
@@ -26,7 +25,6 @@ export const getProduct = async (req, res, next) => {
         res.json({
             message: 'Product found',
             data: product,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -55,7 +53,6 @@ export const createProduct = async (req, res, next) => {
         res.json({
             message: 'Product created',
             data: product,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -106,7 +103,6 @@ export const deleteProduct = async (req, res, next) => {
 
         res.json({
             message: 'Product deleted',
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)

@@ -7,7 +7,6 @@ export const register = async (req, res, next) => {
         res.json({
             message: 'User registered',
             data: req.user._id,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -21,7 +20,6 @@ export const login = async (req, res, next) => {
         res.json({
             message: 'User logged',
             data: req.session.user,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -37,7 +35,6 @@ export const getMe = (req, res, next) => {
         res.json({
             message: ':)',
             data: req.session.user,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -50,7 +47,6 @@ export const logout = (req, res, next) => {
 
         res.json({
             message: 'successfully logout',
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)

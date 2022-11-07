@@ -14,7 +14,6 @@ export const getCart = async (req, res, next) => {
         res.json({
             message: 'Cart found',
             data: cart,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -37,7 +36,6 @@ export const createCart = async (req, res, next) => {
         res.json({
             message: 'Cart created',
             data: cart,
-            status: res.statusCode,
         })
     } catch (err) {
         next(createError(500))
@@ -49,14 +47,14 @@ export const deleteCart = async (req, res, next) => {
         const user = await User.findById(req.session.user._id)
         const cart = await Cart.findById(user.cart)
 
+        await user.update({ $unset: { cart: 1 } })
+
         if (!cart) throw createError(404, 'Cart not found')
 
-        await user.update({ $unset: { cart: 1 } })
         await cart.delete()
 
         res.json({
             message: 'Cart deleted',
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -112,7 +110,6 @@ export const addProduct = async (req, res, next) => {
         res.json({
             message: 'Product added to cart',
             data: pCart ?? { _id: product._id, quantity },
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -140,7 +137,6 @@ export const getProducts = async (req, res, next) => {
         res.json({
             message: 'Products fetched',
             data: products,
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
@@ -195,7 +191,6 @@ export const removeProduct = async (req, res, next) => {
         res.json({
             message: 'Remove one product from cart',
             data: { id: pid, quantity: pCart.quantity },
-            status: res.statusCode,
         })
     } catch (err) {
         next(err)
