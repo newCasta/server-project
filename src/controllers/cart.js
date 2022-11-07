@@ -1,12 +1,13 @@
 import createError from 'http-errors'
 import Cart from '../models/Cart.js'
+import User from '../models/User.js'
 import Product from '../models/Product.js'
 import { validateObjId } from '../utils/functions.js'
 
 export const getCart = async (req, res, next) => {
     try {
-        const { cid } = req.params
-        const cart = await Cart.findById(cid)
+        const user = await User.findById(req.session.user._id)
+        const cart = await Cart.findById(user.cart)
 
         if (!cart) throw createError(404, 'Cart not found')
 
@@ -22,9 +23,16 @@ export const getCart = async (req, res, next) => {
 
 export const createCart = async (req, res, next) => {
     try {
+        const user = await User.findById(req.session.user._id)
+
+        if (!!user.cart)
+            return next(createError(400, 'This user already has a cart'))
+
         const cart = await Cart.create({
             products: [],
         })
+
+        await user.update({ cart: cart._id })
 
         res.json({
             message: 'Cart created',
@@ -38,11 +46,12 @@ export const createCart = async (req, res, next) => {
 
 export const deleteCart = async (req, res, next) => {
     try {
-        const { cid } = req.params
-        const cart = await Cart.findById(cid)
+        const user = await User.findById(req.session.user._id)
+        const cart = await Cart.findById(user.cart)
 
         if (!cart) throw createError(404, 'Cart not found')
 
+        await user.update({ $unset: { cart: 1 } })
         await cart.delete()
 
         res.json({
@@ -56,7 +65,7 @@ export const deleteCart = async (req, res, next) => {
 
 export const addProduct = async (req, res, next) => {
     try {
-        const { cid } = req.params
+        const user = await User.findById(req.session.user._id)
         const { pid } = req.body
 
         if (!pid) throw createError(400, 'pid is required')
@@ -65,7 +74,7 @@ export const addProduct = async (req, res, next) => {
 
         const quantity = parseInt(req.body.quantity) || 1
 
-        const cart = await Cart.findById(cid)
+        const cart = await Cart.findById(user.cart)
 
         if (!cart) throw createError(404, 'Cart not found')
 
@@ -98,7 +107,7 @@ export const addProduct = async (req, res, next) => {
             })
         }
 
-        await Cart.findByIdAndUpdate(cid, cart)
+        await Cart.findByIdAndUpdate(user.cart, cart)
 
         res.json({
             message: 'Product added to cart',
@@ -112,8 +121,8 @@ export const addProduct = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
     try {
-        const { cid } = req.params
-        const cart = await Cart.findById(cid)
+        const user = await User.findById(req.session.user._id)
+        const cart = await Cart.findById(user.cart)
 
         if (!cart) throw createError(404, 'Cart not found')
 
@@ -129,7 +138,7 @@ export const getProducts = async (req, res, next) => {
         )
 
         res.json({
-            message: 'Cart found',
+            message: 'Products fetched',
             data: products,
             status: res.statusCode,
         })
@@ -140,12 +149,12 @@ export const getProducts = async (req, res, next) => {
 
 export const removeProduct = async (req, res, next) => {
     try {
-        const { cid } = req.params
+        const user = await User.findById(req.session.user._id)
         const { pid } = req.params
         const removeAll =
             !req.body.removeAll || !!req.body.quantityToRemove ? false : true
         const quantityToRemove = req.body.quantityToRemove ?? 1
-        const cart = await Cart.findById(cid)
+        const cart = await Cart.findById(user.cart)
 
         if (!cart) throw createError(404, 'Cart not found')
 
@@ -162,7 +171,7 @@ export const removeProduct = async (req, res, next) => {
                 validateObjId(p._id, product._id, false)
             )
 
-            await Cart.findByIdAndUpdate(cid, cart)
+            await Cart.findByIdAndUpdate(user.cart, cart)
 
             return res.json({
                 message: 'Product completely removed from cart',
@@ -181,7 +190,7 @@ export const removeProduct = async (req, res, next) => {
             )
         }
 
-        await Cart.findByIdAndUpdate(cid, cart)
+        await Cart.findByIdAndUpdate(user.cart, cart)
 
         res.json({
             message: 'Remove one product from cart',

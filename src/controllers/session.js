@@ -2,6 +2,8 @@ import createError from 'http-errors'
 
 export const register = async (req, res, next) => {
     try {
+        req.session.user = req.user
+
         res.json({
             message: 'User registered',
             data: req.user._id,
@@ -35,6 +37,19 @@ export const getMe = (req, res, next) => {
         res.json({
             message: ':)',
             data: req.session.user,
+            status: res.statusCode,
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const logout = (req, res, next) => {
+    try {
+        req.session.destroy()
+
+        res.json({
+            message: 'successfully logout',
             status: res.statusCode,
         })
     } catch (err) {

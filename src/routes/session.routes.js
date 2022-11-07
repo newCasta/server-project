@@ -1,5 +1,11 @@
 import { Router } from 'express'
-import { login, register, failure, getMe } from '../controllers/session.js'
+import {
+    login,
+    register,
+    failure,
+    getMe,
+    logout,
+} from '../controllers/session.js'
 import passport from 'passport'
 import { loggedUser } from '../middlewares/loggedUser.js'
 
@@ -20,6 +26,8 @@ router.post(
     }),
     login
 )
+
+router.delete('/logout', loggedUser, logout)
 
 router.get('/me', loggedUser, getMe)
 

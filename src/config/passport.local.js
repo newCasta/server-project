@@ -1,6 +1,7 @@
 import passport from 'passport'
 import local from 'passport-local'
 import User from '../models/User.js'
+import Cart from '../models/Cart.js'
 import { createHash, compareHash } from '../utils/functions.js'
 
 const LocalStrategy = local.Strategy
@@ -47,10 +48,15 @@ const initializePassport = () => {
                             message: 'User already exists',
                         })
 
+                    const cart = await Cart.create({
+                        products: [],
+                    })
+
                     const newUser = await User.create({
                         ...req.body,
                         password: await createHash(`${password}`),
                         permissions: ['user'],
+                        cart: cart._id,
                     })
 
                     return done(
