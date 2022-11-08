@@ -19,6 +19,7 @@
         "http-errors": "^2.0.0",
         "mongoose": "^6.5.4",
         "morgan": "^1.10.0",
+        "nodemailer": "^6.8.0",
         "passport": "^0.6.0",
         "passport-local": "^1.0.0"
     },
@@ -29,6 +30,7 @@
         "@types/express-session": "^1.17.5",
         "@types/http-errors": "^2.0.1",
         "@types/morgan": "^1.9.3",
+        "@types/nodemailer": "^6.4.6",
         "@types/passport": "^1.0.11",
         "@types/passport-local": "^1.0.34",
         "nodemon": "^2.0.19"

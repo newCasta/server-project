@@ -3,6 +3,7 @@ import Cart from '../models/Cart.js'
 import User from '../models/User.js'
 import Product from '../models/Product.js'
 import { validateObjId } from '../utils/functions.js'
+import { transporter } from '../services/emailSender.js'
 
 export const getCart = async (req, res, next) => {
     try {
@@ -191,6 +192,43 @@ export const removeProduct = async (req, res, next) => {
         res.json({
             message: 'Remove one product from cart',
             data: { id: pid, quantity: pCart.quantity },
+        })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const checkout = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.session.user._id)
+        const cart = await Cart.findById(user.cart)
+
+        if (!cart) throw createError(404, 'Cart not found')
+        if (cart.products.length < 1)
+            throw createError(404, 'There are no products')
+
+        for (const p of cart.products) {
+            const product = await Product.findById(p._id)
+
+            if (!product) throw createError(404, 'Product not found')
+
+            await product.updateOne({
+                stock: parseInt(product.stock) - parseInt(p.quantity),
+            })
+        }
+
+        await cart.updateOne({ products: [] })
+        await transporter.sendMail({
+            from: 'ecommerce-app',
+            to: JSON.stringify(user.email),
+            subject: 'Payment success',
+            html: `
+            <h1>Payment successfully</h1> 
+            `,
+        })
+
+        res.json({
+            message: 'payment success',
         })
     } catch (err) {
         next(err)

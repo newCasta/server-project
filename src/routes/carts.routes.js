@@ -6,13 +6,19 @@ import {
     addProduct,
     getProducts,
     removeProduct,
+    checkout,
 } from '../controllers/cart.js'
 import { loggedUser } from '../middlewares/loggedUser.js'
 
 const router = Router()
 
-router.post('/', loggedUser, createCart)
-router.route('/').get(loggedUser, getCart).delete(loggedUser, deleteCart)
+router
+    .route('/')
+    .get(loggedUser, getCart)
+    .delete(loggedUser, deleteCart)
+    .post(loggedUser, createCart)
+
+router.post('/checkout', loggedUser, checkout)
 
 router
     .route('/products')
