@@ -7,6 +7,8 @@ the mongo url: mongodb+srv://siCasta:KAAbg22xkalVCHg6@cluster0.7sqyldr.mongodb.n
 
 ## routes
 
+### carts
+
 - `POST` /api/carts : create a new cart
 - `GET` /api/carts : get a cart
 - `DELETE` /api/carts : delete a cart
@@ -15,11 +17,15 @@ the mongo url: mongodb+srv://siCasta:KAAbg22xkalVCHg6@cluster0.7sqyldr.mongodb.n
 - `DELETE` /api/carts/products/:pid : delete a product from a cart
 - `POST` /api/carts/checkout : simulate a payment and reduce the product stock
 
+### products
+
 - `POST` /api/products : create a new product needs admin
 - `GET` /api/products : get all products
 - `GET` /api/products/:pid : get a product
 - `DELETE` /api/products/:pid : delete a product needs admin
 - `PUT` /api/products/:pid : update a product needs admin
+
+### sessions
 
 - `POST` /api/session/register : register a new user
 - `POST` /api/session/login : a user can logs in
